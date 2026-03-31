@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/moedas
+    username: root
+    password: senha falsa
+  jpa:
+    show-sql: true
+  application:
+    name: conversor
