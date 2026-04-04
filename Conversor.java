@@ -7,20 +7,31 @@ import javax.sql.DataSource;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import igor.conversor.Links.Moeda;
+
 @Component
 public class Conversor implements CommandLineRunner{
     private DataSource dataSource;
     private Inserir inserir;
-    public Conversor(DataSource dataSource, Inserir inserir){
+    private Links link;
+    String abv, nome;
+    public Conversor(DataSource dataSource, Inserir inserir, Links link){
         this.dataSource = dataSource;
         this.inserir = inserir;
+        this.link = link;
     }
+    @Override
     public void run(String... args) {
         try {
             Connection conn = dataSource.getConnection();
             System.out.println("sucesso");
-            URL urlcot = new URL("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='USD'&@dataInicial='03-19-2026'&@dataFinalCotacao='03-26-2026'&$top=1&$orderby=dataHoraCotacao%20desc&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao");
-            inserir.inserir("Dolar", "USD", urlcot, conn);
+            for(int i = 1; i <= 10; i++){
+                Moeda moeda = link.abrev(i);
+                abv = moeda.abv();
+                nome = moeda.nome();
+                URL urlcot = new URL(link.link(abv));
+                inserir.inserir(nome, abv, urlcot, conn);
+            }
             conn.close();
 
         } catch (Exception e) {
