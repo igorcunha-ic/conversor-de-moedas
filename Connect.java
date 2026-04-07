@@ -1,34 +1,42 @@
 package igor.conversor;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.sql.DataSource;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Cotacao")
+@RequestMapping("/cotacao")
 public class Connect {
     private final DataSource dataSource;
     public Connect(DataSource dataSource){
         this.dataSource = dataSource;
     }
+    public record Valor(double compra, double venda){}
     @GetMapping
-    public String getcotacao(){
+    public Valor getcotacao(@RequestParam String abvmoeda){
         try{
             Connection conn = dataSource.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM valores ORDER BY id DESC LIMIT 1");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM valores WHERE abreviatura = ? ORDER BY dia DESC LIMIT 1");
+            stmt.setString(1, abvmoeda);
+            ResultSet rs = stmt.executeQuery();
             if(rs.next()){
-                String compra = rs.getString("cotacao_compra");
-                String venda = rs.getString("cotacao_venda");
-                return "{ \"compra\": " + compra + ", \"venda\": " + venda + " }";
+                double compra = rs.getDouble("cotacao_compra");
+                double venda = rs.getDouble("cotacao_venda");
+                conn.close();
+                return new Valor(compra , venda);
             }
             conn.close();
-            return "drogas";
+            return new Valor(0,0);
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "{}";
+        return new Valor(0, 0);
     }
 }
