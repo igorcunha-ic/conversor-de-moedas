@@ -128,6 +128,30 @@ conversor_de_moedas/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\conversor_de_moedas.dir\build.make CMakeFiles/conversor_de_moedas.dir/build
 .PHONY : conversor_de_moedas/fast
 
+cliente/funcoes.obj: cliente/funcoes.cpp.obj
+.PHONY : cliente/funcoes.obj
+
+# target to build an object file
+cliente/funcoes.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\conversor_de_moedas.dir\build.make CMakeFiles/conversor_de_moedas.dir/cliente/funcoes.cpp.obj
+.PHONY : cliente/funcoes.cpp.obj
+
+cliente/funcoes.i: cliente/funcoes.cpp.i
+.PHONY : cliente/funcoes.i
+
+# target to preprocess a source file
+cliente/funcoes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\conversor_de_moedas.dir\build.make CMakeFiles/conversor_de_moedas.dir/cliente/funcoes.cpp.i
+.PHONY : cliente/funcoes.cpp.i
+
+cliente/funcoes.s: cliente/funcoes.cpp.s
+.PHONY : cliente/funcoes.s
+
+# target to generate assembly for a file
+cliente/funcoes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\conversor_de_moedas.dir\build.make CMakeFiles/conversor_de_moedas.dir/cliente/funcoes.cpp.s
+.PHONY : cliente/funcoes.cpp.s
+
 cliente/main.obj: cliente/main.cpp.obj
 .PHONY : cliente/main.obj
 
@@ -161,6 +185,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... conversor_de_moedas
+	@echo ... cliente/funcoes.obj
+	@echo ... cliente/funcoes.i
+	@echo ... cliente/funcoes.s
 	@echo ... cliente/main.obj
 	@echo ... cliente/main.i
 	@echo ... cliente/main.s
